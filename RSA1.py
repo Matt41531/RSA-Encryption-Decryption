@@ -3,6 +3,7 @@ import math
 
 #AUTHOR: Matthew Rife
 #START DATE: 4/2/18
+#PURPOSE: RSA Encryption/Decryption program that takes a message from message.txt and returns decrypted_message.txt as well as public_key.txt, private_key.txt, ciphertext.txt
 
 
 #NOTICE: These top functions work but I decided to leave them out because they add lots of time to the program in return to making sure that the primality test doesn't get fooled by a Carmichael number.
@@ -165,6 +166,8 @@ def encrypt():
 	int_message = 0
 	list_int_message = []
 	count = 0
+
+	#k = m0 + m1*256 + m2*256^2... etc
 	for x in range(len(list_message)):
 		#DEBUG:print("HERE IS A MESSAGE PART ")	
 		#DEBUG:print(list_message[x])
@@ -203,7 +206,7 @@ def encrypt():
 
 #PURPOSE:decrypt the ciphertext and turn it back into the string message
 #INPUT:ciphertext as a number from ciphertext.txt, public_key.txt, and private_key.txt
-#OUTPUT:prints the decrypted message as a string
+#OUTPUT:prints the decrypted message to decrypted_message.txt
 def decrypt():
 	with open("ciphertext.txt", 'r') as f:
 		ciphertext = f.read()
@@ -247,6 +250,11 @@ def decrypt():
 
 	final_message = ''
 	final_message = ''.join(chr(v) for v in ascii_values)
+	#strip any leftover nulls from joining
+	final_message = final_message.rstrip('\0')
+	#write to file
+	with open("decrypted_message.txt", 'w') as f:
+		print >>f, final_message
 	print("DECRYPTED MESSAGE: " + final_message)
 
 
